@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.ldd.bdd.repository.ProductInventoryRepositoryImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +52,6 @@ public class ControllerPoint extends CommonController{
 	private ProductRepository productRepository;
 	
 	@Autowired
-	private ProductInventoryService productInventoryService;
-	
-	@Autowired
 	private CustomerRepository customerRepository;
 	
 	@Autowired 
@@ -64,7 +62,10 @@ public class ControllerPoint extends CommonController{
 	
 	@Autowired 
 	private PersonService personService;
-	
+
+	@Autowired
+	private ProductInventoryRepositoryImp productInventoryRepositoryImp;
+
 	private static final Logger log = LoggerFactory.getLogger(ControllerPoint.class);
 
 	@GetMapping("/ejercicio1/{p_Category}")
@@ -106,7 +107,7 @@ public class ControllerPoint extends CommonController{
 	public ResponseEntity<List<UpdateQtyDTO>> ejercicio3(@PathVariable int p_localidad,@PathVariable int p_categoria){
 		try {
 			List<UpdateQtyDTO> updateQtyDTOs = new ArrayList<UpdateQtyDTO>();
-			productInventoryService.updateqty(p_localidad, p_categoria).
+			productInventoryRepositoryImp.updateqty(p_localidad, p_categoria).
 			forEach(r->{
 				UpdateQtyDTO updateQtyDTO = new UpdateQtyDTO();
 				updateQtyDTO.setLocationid(Integer.valueOf(r[0].toString()));

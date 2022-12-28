@@ -33,23 +33,12 @@ import com.ldd.bdd.DTO.UpdateQtyDTO;
 @Entity
 @Table(name = "ProductInventory")
 @XmlRootElement
-@SqlResultSetMapping(
-        name = "UpdateQtyDTO", classes = {
-        @ConstructorResult(targetClass = UpdateQtyDTO.class, columns = {
-                @ColumnResult(name = "ProductID"),
-                @ColumnResult(name = "LocationID"),
-                @ColumnResult(name = "Quantity")
-        })
-})
-
-
 @NamedStoredProcedureQuery(
-        name = "UPDATEQTY",
-        procedureName = "SP_UPDATEQTY",resultSetMappings = "UpdateQtyDTO",
+        name = "sp_updateQuantity",
+        procedureName = "sp_updateQuantity",
         parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_LOCALIDAD", type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, name = "P_CATEGORY", type = Integer.class),
-                
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class,name = "p_location"),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class,name = "p_category")
         }
 )
 public class ProductInventory implements Serializable {

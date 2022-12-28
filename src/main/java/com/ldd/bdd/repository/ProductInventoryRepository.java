@@ -11,5 +11,5 @@ import com.ldd.bdd.DTO.Request.ProductInventoryDTORequest;
  */
 
 public interface ProductInventoryRepository{
-	public void updateQuatity(ProductInventoryDTORequest productInventoryDTORequest);
+	public int updateQuatity(ProductInventoryDTORequest productInventoryDTORequest);
 }

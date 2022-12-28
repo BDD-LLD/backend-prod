@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.ldd.bdd.DTO.Request.ProductInventoryDTORequest;
 import com.ldd.bdd.repository.ProductInventoryRepositoryImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ldd.bdd.DTO.GenericResponseDTO;
@@ -40,8 +37,9 @@ import com.ldd.bdd.service.SalesOrderHeaderService;
  * @author Diego
  *
  */
-@RequestMapping
+
 @RestController
+@RequestMapping("/ejercicios")
 public class ControllerPoint extends CommonController{
 	
 	
@@ -103,22 +101,17 @@ public class ControllerPoint extends CommonController{
 		}
 	}
 	
-	@RequestMapping(path = "/ejercicio3/{p_localidad}/{p_categoria}",method = RequestMethod.PATCH)
-	public ResponseEntity<List<UpdateQtyDTO>> ejercicio3(@PathVariable int p_localidad,@PathVariable int p_categoria){
+	@RequestMapping(path = "/ejercicio3",method = RequestMethod.POST)
+	public ResponseEntity<?> ejercicio3(@RequestBody ProductInventoryDTORequest productInventoryDTORequest){
 		try {
 			List<UpdateQtyDTO> updateQtyDTOs = new ArrayList<UpdateQtyDTO>();
-			productInventoryRepositoryImp.updateqty(p_localidad, p_categoria).
-			forEach(r->{
-				UpdateQtyDTO updateQtyDTO = new UpdateQtyDTO();
-				updateQtyDTO.setLocationid(Integer.valueOf(r[0].toString()));
-				updateQtyDTO.setProductid(Integer.valueOf(r[1].toString()));
-				updateQtyDTO.setProductid(Integer.valueOf(r[2].toString()));
-				updateQtyDTOs.add(updateQtyDTO);
-			});
-			log.info(updateQtyDTOs.toString());
+
+			int bandera = productInventoryRepositoryImp.updateQuatity(productInventoryDTORequest);
+
+			log.info(String.valueOf(bandera));
 			/*return  ResponseEntity.ok(new GenericResponseDTO<>(SUCCESS, HTTP_SUCCESS, null,
                     null,"Servicio ejecutado exitosamente" ,productoMasSolicitadoDTO));*/
-			return ResponseEntity.ok(updateQtyDTOs);
+			return ResponseEntity.ok(bandera);
 		} catch (Exception e) {
 			log.warn(e.getMessage());
 			/*return ResponseEntity.ok(new GenericResponseDTO<>(SUCCESS, HTTP_SUCCESS, null,

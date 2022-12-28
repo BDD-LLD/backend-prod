@@ -6,11 +6,13 @@ package com.ldd.bdd.service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ldd.bdd.repository.SalesOrderHeaderRepository;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Diego
  *
  */
+@Service
 public class SalesOrderHeaderService {
 	
 	@Autowired

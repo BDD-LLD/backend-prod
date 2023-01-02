@@ -5,31 +5,26 @@ package com.ldd.bdd.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import com.ldd.bdd.DTO.Request.ProductInventoryDTORequest;
-import com.ldd.bdd.repository.ProductInventoryRepositoryImp;
+import com.ldd.bdd.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.ldd.bdd.DTO.GenericResponseDTO;
 import com.ldd.bdd.DTO.ProductoMasSolicitadoDTO;
 import com.ldd.bdd.DTO.TotalDeVentasDTO;
 import com.ldd.bdd.DTO.UpdateQtyDTO;
-import com.ldd.bdd.entity.Customer;
-import com.ldd.bdd.entity.SalesOrderDetail;
-import com.ldd.bdd.entity.SalesOrderHeader;
-import com.ldd.bdd.repository.CustomerRepository;
-import com.ldd.bdd.repository.ProductRepository;
-import com.ldd.bdd.repository.SalesOrderHeaderRepository;
+import com.ldd.bdd.DTO.Request.ProductInventoryDTORequest;
 import com.ldd.bdd.service.PersonService;
-import com.ldd.bdd.service.ProductInventoryService;
 import com.ldd.bdd.service.SalesOrderDetailService;
 import com.ldd.bdd.service.SalesOrderHeaderService;
 
@@ -63,6 +58,9 @@ public class ControllerPoint extends CommonController{
 
 	@Autowired
 	private ProductInventoryRepositoryImp productInventoryRepositoryImp;
+	
+	/*@Autowired
+	private ProductInventoryRepository productInventoryRepository;*/
 
 	private static final Logger log = LoggerFactory.getLogger(ControllerPoint.class);
 
@@ -105,13 +103,15 @@ public class ControllerPoint extends CommonController{
 	public ResponseEntity<?> ejercicio3(@RequestBody ProductInventoryDTORequest productInventoryDTORequest){
 		try {
 			List<UpdateQtyDTO> updateQtyDTOs = new ArrayList<UpdateQtyDTO>();
-
-			int bandera = productInventoryRepositoryImp.updateQuatity(productInventoryDTORequest);
-
-			log.info(String.valueOf(bandera));
+			int location = productInventoryDTORequest.getLocation();
+			int category = productInventoryDTORequest.getCategory();
+			log.info(String.valueOf(location),String.valueOf(category));
+			//productInventoryRepository.sp_updateQuantity(location,category);
+			productInventoryRepositoryImp.updateQuatity(productInventoryDTORequest);
+			//log.info(String.valueOf(bandera));
 			/*return  ResponseEntity.ok(new GenericResponseDTO<>(SUCCESS, HTTP_SUCCESS, null,
                     null,"Servicio ejecutado exitosamente" ,productoMasSolicitadoDTO));*/
-			return ResponseEntity.ok(bandera);
+			return ResponseEntity.ok(HttpStatus.OK);
 		} catch (Exception e) {
 			log.warn(e.getMessage());
 			/*return ResponseEntity.ok(new GenericResponseDTO<>(SUCCESS, HTTP_SUCCESS, null,
@@ -132,10 +132,10 @@ public class ControllerPoint extends CommonController{
 		}
 	}
 	
-	@RequestMapping(value = "/ejercicio5/{soID}/{qty}", method = RequestMethod.PATCH)
-	public ResponseEntity<?> ejercicio5(@PathVariable int soID,@PathVariable int qty){
+	@RequestMapping(value = "/ejercicio5", method = RequestMethod.POST)
+	public ResponseEntity<?> ejercicio5(@RequestBody ProductInventoryDTORequest productInventoryDTORequest){
 		try {
-			return ResponseEntity.ok(salesOrderDetailService.orderQtyUpdate(qty,soID));
+			return ResponseEntity.ok(HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.ok(e.getMessage());
 		}

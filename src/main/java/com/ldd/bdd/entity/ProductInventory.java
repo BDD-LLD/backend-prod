@@ -33,14 +33,6 @@ import com.ldd.bdd.DTO.UpdateQtyDTO;
 @Entity
 @Table(name = "ProductInventory")
 @XmlRootElement
-@NamedStoredProcedureQuery(
-        name = "sp_updateQuantity",
-        procedureName = "sp_updateQuantity",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class,name = "p_location"),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class,name = "p_category")
-        }
-)
 public class ProductInventory implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -3,6 +3,8 @@
  */
 package com.ldd.bdd.repository;
 
+import com.ldd.bdd.entity.ProductInventory;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,10 +17,13 @@ import com.ldd.bdd.entity.ProductCategory;
  * @author Diego
  *
  */
-
-public interface ProductInventoryRepository {
+@Repository
+public interface ProductInventoryRepository extends CrudRepository<ProductInventory,Integer>{
 	
-	int updateQuatity(ProductInventoryDTORequest productInventoryDTORequest);
+	//int updateQuatity(ProductInventoryDTORequest productInventoryDTORequest);
+
+	@Query(value = "Call sp_updateQuantity  :p_location, :p_category ",nativeQuery = true)
+	int updateQ(@Param("p_location") int p_location,@Param("p_category") int p_category);
 	  
 	
 }

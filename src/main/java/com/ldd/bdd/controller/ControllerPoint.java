@@ -56,13 +56,15 @@ public class ControllerPoint extends CommonController{
 	@Autowired 
 	private PersonService personService;
 
-	@Autowired
-	private ProductInventoryRepositoryImp productInventoryRepositoryImp;
+	/*@Autowired
+	private ProductInventoryRepositoryImp productInventoryRepositoryImp;*/
 	
 	/*@Autowired
 	private ProductInventoryRepository productInventoryRepository;*/
 
 	private static final Logger log = LoggerFactory.getLogger(ControllerPoint.class);
+	@Autowired
+	private ProductInventoryRepository productInventoryRepository;
 
 	@GetMapping("/ejercicio1/{p_Category}")
 	public ResponseEntity<List<TotalDeVentasDTO>> ejercicio1(@PathVariable int p_Category){
@@ -103,14 +105,10 @@ public class ControllerPoint extends CommonController{
 	public ResponseEntity<?> ejercicio3(@RequestBody ProductInventoryDTORequest productInventoryDTORequest){
 		try {
 			List<UpdateQtyDTO> updateQtyDTOs = new ArrayList<UpdateQtyDTO>();
-			int location = productInventoryDTORequest.getLocation();
-			int category = productInventoryDTORequest.getCategory();
-			log.info(String.valueOf(location),String.valueOf(category));
-			//productInventoryRepository.sp_updateQuantity(location,category);
-			productInventoryRepositoryImp.updateQuatity(productInventoryDTORequest);
-			//log.info(String.valueOf(bandera));
-			/*return  ResponseEntity.ok(new GenericResponseDTO<>(SUCCESS, HTTP_SUCCESS, null,
-                    null,"Servicio ejecutado exitosamente" ,productoMasSolicitadoDTO));*/
+			int p_location = productInventoryDTORequest.getLocation();
+			int p_category = productInventoryDTORequest.getCategory();
+			log.info("\nLocation: "+String.valueOf(p_location) + "\nCategory: " +String.valueOf(p_category));
+			productInventoryRepository.updateQ(p_location,p_category);
 			return ResponseEntity.ok(HttpStatus.OK);
 		} catch (Exception e) {
 			log.warn(e.getMessage());
